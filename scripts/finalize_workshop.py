@@ -10,6 +10,12 @@ from secure_exam.key_manager import load_private
 from secure_exam.validation import random_bytes
 
 
+def require(condition: bool, message: str) -> None:
+    """Keep verification active even when Python optimization is enabled."""
+    if not condition:
+        raise RuntimeError(message)
+
+
 def run() -> None:
     root = Path(__file__).resolve().parents[1]
     workspace = root / "results" / ("workshop-" + random_bytes(8).hex())
@@ -25,16 +31,17 @@ def run() -> None:
         for args in (["setup"], ["simulate"], ["encrypt"], ["deliver"], ["decrypt"],
                      ["encrypt", "--output", "transfer/outbox/second.secure"]):
             commands.append(["--root", str(workspace), *args])
-            assert main(commands[-1]) == 0
+            require(main(commands[-1]) == 0, "CLI workflow command failed")
         first = workspace / "transfer/outbox/exam_paper.secure"
         second = workspace / "transfer/outbox/second.secure"
         p, q = parse(first.read_bytes()), parse(second.read_bytes())
         key = load_private(workspace / "recipient/keys/recipient_private.pem", os.environ[names[1]].encode())
-        assert unwrap(decode(p["encrypted_key"]), key) != unwrap(decode(q["encrypted_key"]), key)
-        assert p["nonce"] != q["nonce"] and p["ciphertext"] != q["ciphertext"]
-        assert main(["--root", str(workspace), "decrypt", "--package", str(second), "--output", "recipient/second"]) == 0
+        require(unwrap(decode(p["encrypted_key"]), key) != unwrap(decode(q["encrypted_key"]), key), "AES keys unexpectedly match")
+        require(p["nonce"] != q["nonce"] and p["ciphertext"] != q["ciphertext"], "Repeated encryption did not differ")
+        commands.append(["--root", str(workspace), "decrypt", "--package", str(second), "--output", "recipient/second"])
+        require(main(commands[-1]) == 0, "Second package decryption failed")
         for destination in ("recipient/output", "recipient/second"):
-            assert (workspace / destination / source.name).read_bytes() == source.read_bytes()
+            require((workspace / destination / source.name).read_bytes() == source.read_bytes(), "Recovered bytes differ")
         # New names preserve historical samples and their associated public keys.
         (root / "samples/workshop_exam_paper.secure").write_bytes(first.read_bytes())
         (root / "samples/workshop_sender_public.pub").write_bytes((workspace / "recipient/keys/sender_public.pem").read_bytes())

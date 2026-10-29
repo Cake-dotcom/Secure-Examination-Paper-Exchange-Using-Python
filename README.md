@@ -132,7 +132,7 @@ Commands executed for finalization in PowerShell:
 ```powershell
 $env:TEMP = 'V:\cryptography_workshop\.tmp'
 $env:TMP = $env:TEMP
-.\.venv\Scripts\python.exe scripts\finalize_workshop.py > results\workshop_simulation.txt
+.\.venv\Scripts\python.exe -O scripts\finalize_workshop.py > results\workshop_simulation.txt
 .\.venv\Scripts\python.exe -m secure_exam.cli test > results\test_results.txt
 .\.venv\Scripts\python.exe -m secure_exam.cli attack-demo > results\workshop_attacks.txt
 ```

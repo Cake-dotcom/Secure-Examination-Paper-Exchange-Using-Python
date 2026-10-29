@@ -85,4 +85,4 @@ tests/test_exchange.py::test_negative_cli_tamper_exit PASSED             [ 97%]
 tests/test_exchange.py::test_negative_temporary_collision_preserves_existing_file PASSED [ 98%]
 tests/test_exchange.py::test_negative_publish_failure_cleans_temporary PASSED [100%]
 
-====================== 79 passed, 7 deselected in 25.80s ======================
+====================== 79 passed, 7 deselected in 28.77s ======================

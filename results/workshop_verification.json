@@ -1,37 +1,46 @@
 {
-  "workspace": "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+  "workspace": "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
   "commands": [
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "setup"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "simulate"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "encrypt"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "deliver"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "decrypt"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "encrypt",
       "--output",
       "transfer/outbox/second.secure"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
+      "decrypt",
+      "--package",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c\\transfer\\outbox\\second.secure",
+      "--output",
+      "recipient/second"
     ]
   ],
   "sha256": "c29ad707911bc3a321023a64ed7de9da0cdb59f53e20bbefedaeea81befe6cca",

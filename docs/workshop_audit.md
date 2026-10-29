@@ -35,3 +35,10 @@ Diagram syntax was manually reviewed against sequenceDiagram participant, messag
 The finalizer uses independently generated temporary demonstration passwords, discarded after verification, following the existing launcher policy. It retains matching encrypted keys in its isolated results workspace but cannot later unlock them without those discarded passwords. Existing user keys are untouched. For durable transfers use the normal prompted setup/encrypt/deliver/decrypt workflow. The generated sample is verified during creation, not claimed decryptable with historical or replacement keys.
 
 No functional cryptographic defect requiring a protocol rewrite was identified. Remaining boundaries: same-account folders are role simulation, output parents must be trusted, Unix branches are not executed on this Windows host, and there is no real network transport, replay prevention, certificate PKI or production revocation.
+
+
+## Follow-up verification
+
+The repeated attachment matched the prior specification byte-for-byte. The delivered source, audit, diagram, sample and manifest were re-inspected. One helper issue was corrected: `scripts/finalize_workshop.py` previously placed CLI calls and verification inside assertions, which Python optimization could disable. It now uses explicit runtime checks and records the second decryption command in its evidence. The cryptographic protocol and existing participant keys were preserved.
+
+The refreshed demonstration was deliberately executed with `python -O scripts/finalize_workshop.py` to exercise this correction. Full CLI tests and attack-demo were then rerun; their current logs are included in the refreshed submission ZIP. Historical evidence files outside that ZIP remain historical records.

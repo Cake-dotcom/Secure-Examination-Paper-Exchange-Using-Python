@@ -1,45 +1,54 @@
 Setup complete; only public keys exchanged through the simulated trusted channel.
-PASS: signature verified, GCM authenticated, recovered file is byte-for-byte identical: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\recipient\output\demo-ae5246740eba0126\exam_paper.txt
-Sample encrypted package: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\transfer\inbox\demo-ae5246740eba0126.secure
-Encrypted and signed package saved: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\transfer\outbox\exam_paper.secure
-Delivered encrypted package: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\transfer\inbox\exam_paper.secure
-Recovered exam_paper.txt: sender signature and AES-GCM authentication VERIFIED. Saved: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\recipient\output\exam_paper.txt
-Encrypted and signed package saved: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\transfer\outbox\second.secure
-Recovered exam_paper.txt: sender signature and AES-GCM authentication VERIFIED. Saved: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\recipient\second\exam_paper.txt
+PASS: signature verified, GCM authenticated, recovered file is byte-for-byte identical: V:\cryptography_workshop\results\workshop-e10f204e18b3582c\recipient\output\demo-eaa68c5f4eb65f2e\exam_paper.txt
+Sample encrypted package: V:\cryptography_workshop\results\workshop-e10f204e18b3582c\transfer\inbox\demo-eaa68c5f4eb65f2e.secure
+Encrypted and signed package saved: V:\cryptography_workshop\results\workshop-e10f204e18b3582c\transfer\outbox\exam_paper.secure
+Delivered encrypted package: V:\cryptography_workshop\results\workshop-e10f204e18b3582c\transfer\inbox\exam_paper.secure
+Recovered exam_paper.txt: sender signature and AES-GCM authentication VERIFIED. Saved: V:\cryptography_workshop\results\workshop-e10f204e18b3582c\recipient\output\exam_paper.txt
+Encrypted and signed package saved: V:\cryptography_workshop\results\workshop-e10f204e18b3582c\transfer\outbox\second.secure
+Recovered exam_paper.txt: sender signature and AES-GCM authentication VERIFIED. Saved: V:\cryptography_workshop\results\workshop-e10f204e18b3582c\recipient\second\exam_paper.txt
 {
-  "workspace": "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+  "workspace": "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
   "commands": [
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "setup"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "simulate"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "encrypt"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "deliver"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "decrypt"
     ],
     [
       "--root",
-      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
       "encrypt",
       "--output",
       "transfer/outbox/second.secure"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c",
+      "decrypt",
+      "--package",
+      "V:\\cryptography_workshop\\results\\workshop-e10f204e18b3582c\\transfer\\outbox\\second.secure",
+      "--output",
+      "recipient/second"
     ]
   ],
   "sha256": "c29ad707911bc3a321023a64ed7de9da0cdb59f53e20bbefedaeea81befe6cca",

@@ -92,4 +92,4 @@ tests/test_exchange.py::test_verification_precedes_private_key_access PASSED [ 9
 tests/test_exchange.py::test_negative_temporary_collision_preserves_existing_file PASSED [ 98%]
 tests/test_exchange.py::test_negative_publish_failure_cleans_temporary PASSED [100%]
 
-============================= 86 passed in 33.27s =============================
+============================= 86 passed in 36.14s =============================
