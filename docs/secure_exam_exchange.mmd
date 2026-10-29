@@ -1,0 +1,49 @@
+sequenceDiagram
+    autonumber
+    participant S as Faculty Sender
+    participant T as Trusted Public-Key Channel
+    participant U as Untrusted Transfer Directory
+    participant A as Attacker
+    participant R as Examination Coordinator
+    S->>S: Generate RSA-4096 pair; encrypt private PEM with password
+    R->>R: Generate separate RSA-4096 pair; encrypt private PEM
+    S->>T: Sender public key only
+    T->>R: Pin trusted sender public key
+    R->>T: Recipient public key only
+    T->>S: Pin trusted recipient public key
+    S->>S: Read bounded binary examination paper
+    S->>S: Generate fresh 256-bit AES key and 12-byte nonce
+    S->>S: Canonical metadata as AAD; AES-256-GCM encrypt; produce 16-byte tag
+    S->>S: Recipient RSA-4096 OAEP; SHA-256 and MGF1-SHA256; label empty
+    S->>S: Build canonical envelope; RSA-PSS SHA-256 and MGF1-SHA256; salt 32 bytes; sign all unsigned fields
+    S->>U: Canonical JSON package with signature
+    opt Adversary controls delivery
+        U->>A: Encrypted package copy
+        A->>U: Modify ciphertext, metadata, signature, nonce, tag or encrypted key
+    end
+    U->>R: Delivered package
+    R->>R: Bound size; strict canonical JSON, schema, Base64 validation
+    R->>R: Verify RSA-PSS with pinned sender public key
+    alt Invalid signature
+        R->>R: Reject; no plaintext saved
+    else Valid signature
+        R->>R: Check authenticated sender and recipient identifiers
+        alt Wrong participant identity
+            R->>R: Reject; no plaintext saved
+        else Intended recipient
+            R->>R: Unlock recipient private PEM; RSA-OAEP recover AES key; require 32 bytes
+            alt Wrong private key or OAEP failure
+                R->>R: Reject; no plaintext saved
+            else Session key recovered
+                R->>R: AES-GCM decrypt with identical canonical AAD
+                alt Invalid GCM authentication
+                    R->>R: Reject; no plaintext saved
+                else All verification succeeds
+                    R->>R: Validate safe destination; atomic plaintext publication
+                    R->>R: Report signature and GCM verification success
+                end
+            end
+        end
+    end
+    Note over S,R: Private keys never transmitted. Confidentiality uses AES-256-GCM and RSA-OAEP.
+    Note over S,R: Integrity uses RSA-PSS and GCM; sender authentication uses the trusted sender public key.

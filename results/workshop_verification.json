@@ -1,0 +1,43 @@
+{
+  "workspace": "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+  "commands": [
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "setup"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "simulate"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "encrypt"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "deliver"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "decrypt"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "encrypt",
+      "--output",
+      "transfer/outbox/second.secure"
+    ]
+  ],
+  "sha256": "c29ad707911bc3a321023a64ed7de9da0cdb59f53e20bbefedaeea81befe6cca",
+  "bytes": 17815,
+  "both_recoveries_identical": true,
+  "distinct_actual_aes_keys": true,
+  "distinct_nonces": true,
+  "distinct_packages": true
+}

@@ -1,0 +1,3 @@
+Isolated demo workspace: V:\cryptography_workshop\results\demo-053be8bf9445de03
+PASS: signature verified, GCM authenticated, recovered file is byte-for-byte identical: V:\cryptography_workshop\results\demo-053be8bf9445de03\recipient\output\demo-6e9b3364de658292\exam_paper.txt
+Sample encrypted package: V:\cryptography_workshop\results\demo-053be8bf9445de03\transfer\inbox\demo-6e9b3364de658292.secure

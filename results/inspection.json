@@ -1,0 +1,9 @@
+{
+  "demo_root": "results\\demo-053be8bf9445de03",
+  "original_sha256": "0931d5117c5c5488432e34044078a3d704efe33e4974a22c64079a8184ce12a1",
+  "recovered_sha256": "0931d5117c5c5488432e34044078a3d704efe33e4974a22c64079a8184ce12a1",
+  "byte_identical": true,
+  "key_separation": true,
+  "signed_packages_verified": 2,
+  "transfer_contains_only_encrypted_packages": true
+}

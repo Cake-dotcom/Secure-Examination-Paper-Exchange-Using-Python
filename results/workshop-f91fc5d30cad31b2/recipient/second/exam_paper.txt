@@ -1,0 +1,344 @@
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 1 of 10 | Section 1: Foundations and terminology
+Section total: 10 marks
+============================================================================
+Duration: 3 hours 30 minutes | Maximum marks: 100
+Candidate identifier: __________________ Date: __________________
+Answer all questions in a separate answer booklet. Show working for numerical
+problems; justify security claims. All ten sections carry 10 marks each.
+No answer key is included. Non-programmable calculators are permitted.
+Assume authentic public keys, uncompromised endpoints and correct library
+primitives unless a question explicitly changes these assumptions. Toy RSA
+parameters are educational only. MiB means 2^20 bytes.
+
+
+Q1-Q10. Select one option for each question (1 mark each).
+1. Which property hides paper contents? A confidentiality B availability C
+replay tracking D routing.
+2. Which key unwraps the session key? A sender public B recipient private C
+sender private D recipient public.
+3. Which key verifies the sender signature? A sender public B recipient
+private C AES key D nonce.
+4. Which GCM nonce length does this application use? A 8 B 12 C 16 D 32
+bytes.
+5. Which field is excluded from signature input? A nonce B encrypted key C
+signature D filename.
+6. Which combination is used for key transport? A RSA-PSS B RSA-OAEP C AES-
+ECB D SHA-256 alone.
+7. What happens after an invalid GCM tag? A save partial output B skip tag C
+reject output D retry without AAD.
+8. Which value is secret? A nonce B algorithm name C AES session key D
+sender identifier.
+9. Which operation is the simulated transport? A copying an envelope B
+emailing a key C opening a socket D issuing a certificate.
+10. What establishes the sender public key's authenticity here? A Base64 B
+its filename C an assumed trusted exchange D its length.
+For each item, write only the question number and chosen letter. There is no
+negative marking. Each question refers to the supplied application, not to
+an unspecified alternative protocol.
+
+End of section 1 | 10 marks
+
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 2 of 10 | Section 2: Threat model and security properties
+Section total: 10 marks
+============================================================================
+
+Q11. Assets and adversaries (5 marks).
+A faculty member places an encrypted examination package in a shared
+directory. An adversary can read, replace, remove, duplicate and delay any
+file in that directory, but cannot access either participant's private keys
+or alter the recipient program. The sender and recipient have already
+exchanged authentic public keys.
+(a) Identify three protected assets and distinguish confidentiality from
+integrity for this scenario (2).
+(b) Describe one modification attack and the check that should reject it
+(1).
+(c) Explain whether the implementation prevents deletion or delayed delivery
+(1).
+(d) Explain what changes if the trusted sender public key can be replaced
+(1).
+Q12. Meaning of successful verification (5 marks).
+A coordinator reports that a package's signature and GCM tag verified. A
+colleague concludes that the paper is recent, was approved by the
+examination committee, and has never been processed before.
+(a) State precisely what successful signature verification establishes
+relative to a pinned public key (2).
+(b) Assess each of the three conclusions separately, naming information or
+state the application would need to justify it (2).
+(c) Explain why an authenticated timestamp alone cannot establish that a
+package has not previously been accepted (1).
+Support answers with the stated adversary model; do not assume an online
+authority, clock policy or replay database.
+
+End of section 2 | 10 marks
+
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 3 of 10 | Section 3: RSA arithmetic and key roles
+Section total: 10 marks
+============================================================================
+
+Q13. Educational RSA calculation (5 marks).
+For this question only, use textbook RSA with p=11, q=17, public exponent
+e=7 and message integer m=8. These deliberately tiny parameters are for
+arithmetic practice and must never be used by the application.
+(a) Calculate n and Euler's phi(n) (1).
+(b) Use the extended Euclidean algorithm to find a positive private exponent
+d such that ed is congruent to 1 modulo phi(n) (2).
+(c) Calculate c=m^e mod n, showing repeated-squaring intermediate residues
+(1).
+(d) Describe the modular operation that recovers m and explain why this
+exercise is not a secure file-encryption design (1).
+Q14. Role separation (5 marks).
+Two participants each possess an RSA-4096 pair. List the four keys with an
+unambiguous owner and public/private designation.
+(a) Map signing, verification, session-key wrapping and unwrapping to those
+keys (2).
+(b) Explain why transferring the recipient private key to the sender is
+unnecessary (1).
+(c) Explain why a recipient public key cannot decrypt an OAEP-wrapped
+session key (1).
+(d) A developer proposes signing with the recipient private key instead.
+Explain which claimed identity the resulting signature would bind and why it
+fails the workshop's sender-authentication objective (1).
+Show all numerical work. Modular reductions may be performed with a non-
+programmable calculator.
+
+End of section 3 | 10 marks
+
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 4 of 10 | Section 4: OAEP, PSS and hybrid encryption
+Section total: 10 marks
+============================================================================
+
+Q15. RSA capacity and message encoding (5 marks).
+Use the OAEP maximum message length formula mLen <= k - 2*hLen - 2, where k
+is the RSA modulus length in bytes and hLen is the hash output length in
+bytes. Take RSA-4096 and SHA-256, whose output is 32 bytes.
+(a) Calculate k and the maximum OAEP message length (2).
+(b) Determine whether a 32-byte AES key fits and whether a 2 MiB examination
+file fits (1).
+(c) Explain how hybrid encryption handles that file without splitting it
+into raw RSA blocks (1).
+(d) State the OAEP hash, MGF1 hash and label policy used by this project
+(1).
+Q16. Digital signatures (5 marks).
+The application uses RSA-PSS with SHA-256, MGF1-SHA256 and a 32-byte salt.
+An engineer proposes replacing the signature with a plain SHA-256 digest
+stored beside the ciphertext.
+(a) Explain how an attacker able to modify the package could also update
+that plain digest (2).
+(b) Explain what possession of the sender private key contributes to RSA-PSS
+signing (1).
+(c) Explain why the signature must include the encrypted session key and
+recipient identifier as well as the ciphertext (1).
+(d) Distinguish the purposes of OAEP randomness and PSS salt; neither should
+be described as a password (1).
+Do not implement OAEP or PSS arithmetic; reason about the library interfaces
+and their security roles.
+
+End of section 4 | 10 marks
+
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 5 of 10 | Section 5: AES-GCM and nonce discipline
+Section total: 10 marks
+============================================================================
+
+Q17. Encryption and authentication workflow (5 marks).
+An AESGCM encryption call returns ciphertext followed by a 16-byte
+authentication tag. The plaintext is 6,000 bytes, and associated metadata is
+serialized separately as AAD.
+(a) State the ciphertext length and combined return-value length (1).
+(b) Explain whether AAD is encrypted and why it is nevertheless
+authenticated (1).
+(c) Give the input values that the recipient must supply to reproduce the
+authentication check (2).
+(d) Explain why writing tentative plaintext before the library confirms
+authentication violates the acceptance requirement (1).
+Q18. Randomness and collision reasoning (5 marks).
+For independent uniformly random values in a space of size N, use the small-
+probability birthday approximation P(collision) approximately q(q-1)/(2N).
+For this calculation only, consider q=2^20 messages encrypted under one
+fixed key with independently sampled 96-bit nonces.
+(a) Give N and estimate the collision probability as a power of two (2).
+(b) Explain why reusing a nonce with the same GCM key is dangerous even if
+both messages are signed (1).
+(c) Contrast this hypothetical fixed-key system with the application's fresh
+256-bit key for every encryption (1).
+(d) Explain why two observed different ciphertexts alone do not prove that
+fresh session keys were generated (1).
+State the approximation used and distinguish an observed test result from a
+mathematical guarantee.
+
+End of section 5 | 10 marks
+
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 6 of 10 | Section 6: Canonical packages and metadata
+Section total: 10 marks
+============================================================================
+
+Q19. Unambiguous serialization (5 marks).
+Two serializers produce {"version":1,"sender":"faculty"} and { "sender":
+"faculty", "version": 1 }. Treat these as illustrative fragments, not
+complete acceptable packages.
+(a) Explain why their raw byte strings differ despite representing
+equivalent ordinary JSON objects (1).
+(b) Specify sorted keys, separators, text encoding and escaping choices that
+yield deterministic bytes in this project (2).
+(c) Explain why duplicate keys such as two recipient fields must be rejected
+rather than silently resolved (1).
+(d) Explain why the signature field must be omitted from the bytes being
+signed (1).
+Q20. Field coverage review (5 marks).
+Review these fields: version, sender, recipient, filename, created_utc,
+algorithms, nonce, encrypted_key, ciphertext, tag and signature.
+(a) Identify the fields included in GCM AAD and those covered by RSA-PSS
+(2).
+(b) An attacker changes only the recipient identifier without re-signing.
+Name the first cryptographic check expected to fail (1).
+(c) A test-only signing key re-signs an envelope after changing its
+filename, without regenerating its GCM tag. Explain the expected failure
+after signature verification (1).
+(d) Explain why Base64 encoding provides neither confidentiality nor sender
+authentication (1).
+Use the application's version-1 policy. Do not propose accepting alternate
+encodings merely because a JSON parser can read them.
+
+End of section 6 | 10 marks
+
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 7 of 10 | Section 7: Key custody and trusted exchange
+Section total: 10 marks
+============================================================================
+
+Q21. Password-protected private keys (5 marks).
+A laptop contains encrypted PKCS#8 PEM private keys and publicly readable
+verification keys. A backup operator accidentally copies both participant
+directories to shared storage.
+(a) Distinguish the risk of public-key disclosure from encrypted-private-key
+disclosure (1).
+(b) Explain how password strength affects an offline attack on the copied
+private key (1).
+(c) Describe two suitable controls for private-key files in addition to
+password encryption (2).
+(d) Explain why printing passwords or passing them as ordinary command-line
+arguments is inappropriate (1).
+Q22. Trust and rotation consequences (5 marks).
+A coordinator receives a new sender public key through the same untrusted
+transfer directory used for encrypted papers. The filename matches the
+previously trusted key. Meanwhile, an administrator considers rerunning
+setup with --force.
+(a) Explain why matching filenames or key sizes do not authenticate the
+replacement (1).
+(b) Describe an out-of-band fingerprint comparison suitable for the workshop
+trust assumption (1).
+(c) Explain the effect of replacing the recipient private key on old OAEP
+envelopes (1).
+(d) Explain the effect of replacing the pinned sender public key on
+verification of historical signatures (1).
+(e) State what must be preserved if historical packages must remain usable
+after a deliberate key change (1).
+Assume there is no certificate infrastructure or implemented revocation
+service.
+
+End of section 7 | 10 marks
+
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 8 of 10 | Section 8: Failure handling and safe file output
+Section total: 10 marks
+============================================================================
+
+Q23. Recipient processing order (5 marks).
+A proposed recipient implementation parses JSON, decrypts the AES key,
+writes decrypted bytes to the requested filename, then checks the signature
+and tag. The metadata filename is ../../outside.txt.
+(a) Identify two independent safety failures in this order (2).
+(b) Write the corrected sequence from bounded package read to final atomic
+file publication, including identity validation (2).
+(c) Explain why deleting a previously written unverified file does not undo
+the original disclosure (1).
+Q24. Filesystem scenarios (5 marks).
+Consider three cases: an existing output file has the same basename; the
+destination is a symlink to another directory; the final file-publication
+operation raises a permission error after staging has begun. Assume the
+output directory is normally controlled by the application account.
+(a) State the safe default action for each case (3).
+(b) Explain the purpose of exclusive staging-file creation and cleanup on
+handled failures (1).
+(c) State the limitation of checking path components if an adversary can
+replace parent directories concurrently (1).
+Your answer must distinguish cryptographic authentication from filesystem
+authorization. Discuss --force only as a deliberate operator action; do not
+use it to bypass symlink rejection. Do not assume that Windows chmod
+establishes the same ACL restrictions as Unix mode 0600.
+
+End of section 8 | 10 marks
+
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 9 of 10 | Section 9: Testing and evidence
+Section total: 10 marks
+============================================================================
+
+Q25. Adversarial test design (5 marks).
+Design a test that changes one ciphertext byte without possessing the sender
+private key. The output directory already contains a valuable unrelated
+file.
+(a) State the fixture inputs and how the attacker makes a separate package
+copy (1).
+(b) State the expected exception or failure stage (1).
+(c) Give assertions for both absence of new plaintext and preservation of
+existing output bytes (2).
+(d) Explain why checking only a printed error message is insufficient (1).
+Q26. Isolating failure causes (5 marks).
+You have three independently generated RSA pairs and access to a test-only
+sender signing key. Production private keys must not be used by tests.
+(a) Design a wrong-recipient-private-key test that first passes signature
+verification (1).
+(b) Design a wrong-sender-public-key test and identify its expected failure
+stage (1).
+(c) Design a valid-signature but invalid-GCM-tag test; explain why it
+exercises a different check than ordinary ciphertext tampering (2).
+(d) For repeated encryption, identify which actual secret value can be
+recovered using the test recipient key to check freshness without logging
+that secret (1).
+Describe assertions and operation order rather than writing complete Python
+programs. A test that creates invalid metadata before the intended
+cryptographic check does not isolate that cryptographic check.
+
+End of section 9 | 10 marks
+
+CONFIDENTIAL | CRYPTOGRAPHY AND INFORMATION SECURITY WORKSHOP
+Examination paper | Page 10 of 10 | Section 10: Implementation review and operational synthesis
+Section total: 10 marks
+============================================================================
+
+Q27. Python application review (5 marks).
+A reviewer sees binary reads bounded to a configured maximum,
+cryptography.hazmat AESGCM calls, RSA-OAEP key wrapping and canonical JSON
+signature input. Another reviewer proposes custom AES code, a fixed nonce
+for repeatable screenshots and verbose session-key logging.
+(a) Evaluate each of the three proposals against the workshop objectives
+(3).
+(b) Explain why binary I/O is necessary for PDF or DOCX input even though
+the supplied paper is plaintext (1).
+(c) Explain why an input-size limit should also constrain encoded package
+reads, allowing for Base64 expansion (1).
+Q28. Demonstration and justified claims (5 marks).
+Prepare a concise demonstration plan for an assessor using separate sender,
+recipient and transfer folders on one computer. The assessor must observe a
+successful exchange, modifications to ciphertext/metadata/signature, wrong
+private and public keys, and two encryptions of the same file.
+(a) Give a logical command sequence and identify the evidence to retain for
+a successful transfer (2).
+(b) Identify two assertions or artifacts that demonstrate safe failure
+without displaying secret data (1).
+(c) Explain why folders owned by one operating-system account do not provide
+isolation equivalent to separate machines (1).
+(d) State two security properties outside this implementation's scope and
+avoid claiming them in the demonstration report (1).
+End your answer by distinguishing the confidentiality role of AES-GCM/RSA-
+OAEP from the sender-authentication role of a trusted RSA-PSS verification
+key. Do not include private keys, passwords or plaintext in the transfer
+directory.
+
+End of section 10 | 10 marks

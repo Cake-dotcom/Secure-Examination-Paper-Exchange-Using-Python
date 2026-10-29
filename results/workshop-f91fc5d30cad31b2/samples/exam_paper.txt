@@ -1,0 +1,4 @@
+CONFIDENTIAL - Demonstration Examination
+Course: Applied Cryptography
+1. Explain authenticated encryption.
+2. Compare RSA-OAEP and RSA-PSS.

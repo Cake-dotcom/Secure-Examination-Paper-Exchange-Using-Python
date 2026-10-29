@@ -1,0 +1,47 @@
+sequenceDiagram
+    autonumber
+    participant S as Faculty sender
+    participant T as Trusted public-key channel
+    participant U as Untrusted transfer directory
+    participant A as Attacker
+    participant R as Examination coordinator
+    S->>S: Generate RSA-4096 pair; encrypt private PEM with password
+    R->>R: Generate separate RSA-4096 pair; encrypt private PEM
+    S->>T: Sender public key only
+    T->>R: Pin trusted sender public key
+    R->>T: Recipient public key only
+    T->>S: Pin trusted recipient public key
+    S->>S: Read bounded binary examination paper
+    S->>S: Generate fresh 32-byte AES key and 12-byte nonce
+    S->>S: Canonical metadata as AAD; AES-256-GCM encrypt
+    S->>S: RSA-OAEP-SHA256 encrypt AES key; label empty
+    S->>S: Build canonical envelope; RSA-PSS-SHA256 sign all unsigned fields
+    S->>U: Canonical JSON package with signature
+    opt Adversary controls delivery
+        U->>A: Encrypted package copy
+        A->>U: Altered fields or signature
+    end
+    U->>R: Delivered package
+    R->>R: Bound size; strict canonical JSON, schema, Base64 validation
+    R->>R: Verify RSA-PSS with pinned sender public key
+    alt Invalid signature
+        R->>R: Reject; no plaintext saved
+    else Valid signature
+        R->>R: Check authenticated sender and recipient identifiers
+        alt Wrong participant identity
+            R->>R: Reject; no plaintext saved
+        else Intended recipient
+            R->>R: RSA-OAEP decrypt AES key; require 32 bytes
+            alt Wrong private key or OAEP failure
+                R->>R: Reject; no plaintext saved
+            else Session key recovered
+                R->>R: AES-GCM decrypt with identical canonical AAD
+                alt Invalid GCM authentication
+                    R->>R: Reject; no plaintext saved
+                else All verification succeeds
+                    R->>R: Validate safe destination; atomic plaintext publication
+                    R->>R: Report signature and GCM verification success
+                end
+            end
+        end
+    end

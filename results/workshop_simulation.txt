@@ -1,0 +1,51 @@
+Setup complete; only public keys exchanged through the simulated trusted channel.
+PASS: signature verified, GCM authenticated, recovered file is byte-for-byte identical: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\recipient\output\demo-ae5246740eba0126\exam_paper.txt
+Sample encrypted package: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\transfer\inbox\demo-ae5246740eba0126.secure
+Encrypted and signed package saved: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\transfer\outbox\exam_paper.secure
+Delivered encrypted package: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\transfer\inbox\exam_paper.secure
+Recovered exam_paper.txt: sender signature and AES-GCM authentication VERIFIED. Saved: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\recipient\output\exam_paper.txt
+Encrypted and signed package saved: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\transfer\outbox\second.secure
+Recovered exam_paper.txt: sender signature and AES-GCM authentication VERIFIED. Saved: V:\cryptography_workshop\results\workshop-f91fc5d30cad31b2\recipient\second\exam_paper.txt
+{
+  "workspace": "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+  "commands": [
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "setup"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "simulate"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "encrypt"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "deliver"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "decrypt"
+    ],
+    [
+      "--root",
+      "V:\\cryptography_workshop\\results\\workshop-f91fc5d30cad31b2",
+      "encrypt",
+      "--output",
+      "transfer/outbox/second.secure"
+    ]
+  ],
+  "sha256": "c29ad707911bc3a321023a64ed7de9da0cdb59f53e20bbefedaeea81befe6cca",
+  "bytes": 17815,
+  "both_recoveries_identical": true,
+  "distinct_actual_aes_keys": true,
+  "distinct_nonces": true,
+  "distinct_packages": true
+}
